@@ -37,13 +37,4 @@ jobs:
 
     - name: Compile and run Java program
       run: java -cp target/classes org.example.Main
-
-
-  Deploy:
-    needs: POO_Tarefas
-    runs-on: ubuntu-18.04
-    
-    steps:
-        - name: Upload Project
-          run: ls     
    
