@@ -29,16 +29,19 @@ jobs:
         cache: maven
     - name: Build with Maven
       run: mvn -B package --file pom.xml
-  testes:
-      needs: build
-      runs-on: unbuntu-latest
       
-      steps:
-      - uses: actions/checkout@v3
+    - name: Compile and run Java program
+      run: |
+        mvn compile
+        java -cp target/classes Main
+  
+  #testes:
+   #   needs: build
+   #   runs-on: unbuntu-latest
       
-      - name: Compile and run Java program
-        run: |
-          mvn compile
-          java -cp target/classes Main
+   #   steps:
+   #   - uses: actions/checkout@v3
+      
+      
          
    
