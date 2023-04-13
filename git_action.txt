@@ -1,0 +1,41 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+jobs:
+  POO_Tarefas:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up JDK 11 ( Instalação )
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Build with Maven ( Instalando dependencias )
+      run: mvn -B package --file pom.xml
+
+    - name: Build Projet ( Compilando )
+      run: mvn compile
+
+    - name: Compile and run Java program
+      run: java -cp target/classes org.example.Main
+
+
+#bloco abaixo com pendencia de execução
+  Deploy:
+    needs: POO_Tarefas
+    runs-on: ubuntu-18.04
+
+    steps:
+        - name: Upload Project
+          run: ls
