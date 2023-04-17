@@ -10,9 +10,9 @@ name: Java CI with Maven
 
 on:
   push:
-    branches: [ "master" ]
+    branches: [ "Mmaster" ]
   pull_request:
-    branches: [ "master" ]
+    branches: [ "Mmaster" ]
 
 jobs:
   build:
@@ -41,5 +41,5 @@ jobs:
         tags: latest
         registry: docker.io
         dockerfile: Dockerfile
-        username: nisflei
-        password: pietra#1509
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
