@@ -41,14 +41,13 @@ jobs:
     - name: Compile and run Java program
       run: java -cp target/classes org.example.Main
       
-    - name: Configure Docker
-      env:
-          DOCKER_VERSION: ${{matrix.dockerVersion}}
-          DOCKER_HOST: ${{matrix.dockerHost}}
-      run: ./setup_docker.sh
-    - name: Build with Maven
-      env:
-          DOCKER_HOST: ${{matrix.dockerHost}}
-      run: |
-          [[ -z "$DOCKER_HOST" ]] && unset DOCKER_HOST
-          ./mvnw --no-transfer-progress verify 
+  
+    - uses: mr-smithers-excellent/docker-build-push@v6
+      name: Build & push Docker image
+      with:
+        image: nisflei/poo_maven
+        tags: v1, latest
+        registry: docker.io
+        dockerfile: Dockerfile
+        username: nisflei
+        password: pietra#1509
