@@ -18,6 +18,14 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { name: "default", javaVersion: 8 }
+          - { name: "default", javaVersion: 17 }
+          - { name: "over TCP", dockerHost: "tcp://127.0.0.1:2375", javaVersion: 8 }
+          - { name: "Docker 19.03.9", dockerVersion: "5:19.03.9~3-0~ubuntu-focal", javaVersion: 8 }
 
     steps:
     - uses: actions/checkout@v3
@@ -32,3 +40,15 @@ jobs:
 
     - name: Compile and run Java program
       run: java -cp target/classes org.example.Main
+      
+    - name: Configure Docker
+      env:
+          DOCKER_VERSION: ${{matrix.dockerVersion}}
+          DOCKER_HOST: ${{matrix.dockerHost}}
+      run: ./setup_docker.sh
+    - name: Build with Maven
+      env:
+          DOCKER_HOST: ${{matrix.dockerHost}}
+      run: |
+          [[ -z "$DOCKER_HOST" ]] && unset DOCKER_HOST
+          ./mvnw --no-transfer-progress verify 
