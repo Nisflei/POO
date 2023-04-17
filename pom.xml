@@ -26,6 +26,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>poo_maven</finalName>
     </build>
 
 
