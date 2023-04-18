@@ -25,6 +25,8 @@ jobs:
     - name: Compilar no JAVA
       run: mvn compile
       
+    - name: Run Program - Java
+      run: java -cp target/classes org.exemplo.Main
     
 
    
