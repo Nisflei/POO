@@ -28,5 +28,13 @@ jobs:
     - name: Run Program - Java
       run: java -cp target/classes org.example.Main
     
-
+    - uses: mr-smithers-excellent/docker-build-push@v6
+      name: Deploy Docker image
+        with:
+          image: nisflei/aula_maven_f
+          tags: 1.0
+          registry: docker.io
+          dockerfile: dockerfile
+          username: Nisflei
+          password: ${{ secrets.DOCKER_PASSWORD }}
    
