@@ -32,7 +32,7 @@ jobs:
       name: Deploy Docker image
       with:
           image: nisflei/aula_maven_f
-          tags: 1.0
+          tags: ${{ github.run_number }}
           registry: docker.io
           dockerfile: dockerfile
           username: ${{ secrets.DOCKERHUB_USUARIO }}
