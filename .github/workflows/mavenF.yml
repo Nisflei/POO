@@ -37,7 +37,7 @@ jobs:
       name: Deploy Docker image
       with:
           image: nisflei/aula_maven_f
-          tags: ${{ github.run_number }}, ${{ steps.calculo.output.version_new }}
+          tags: ${{ github.run_number }}, ${{ steps.calculo.outputs.version_new }}
           registry: docker.io
           dockerfile: dockerfile
           username: ${{ secrets.DOCKERHUB_USUARIO }}
