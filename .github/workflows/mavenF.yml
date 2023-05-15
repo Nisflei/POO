@@ -33,27 +33,27 @@ jobs:
       run: |
          echo "::set-output name=version_new::$(echo $((${{ github.run_number }}/10)))"
   
-    - name: Git Version
-      id: gerador
-      uses: codacy/git-version@2.4.0
-      with:
+    #- name: Git Version
+    #  id: gerador
+    #  uses: codacy/git-version@2.4.0
+    #  with:
         # The name of the release branch
-        release-branch: master
+    #    release-branch: master
         # The prefix to use in the version
-        prefix: QA-
+    #    prefix: QA-
 
-    - name: Use the version
-      run: |
-          echo ${{ steps.gerador.outputs.version }}
-    - name: Use the previous version
-      run: |
-          echo ${{ steps.gerador.outputs.previous-version }}
+    #- name: Use the version
+    #  run: |
+    #      echo ${{ steps.gerador.outputs.version }}
+    #- name: Use the previous version
+    #  run: |
+    #      echo ${{ steps.gerador.outputs.previous-version }}
    
     - uses: mr-smithers-excellent/docker-build-push@v6
       name: Deploy Docker image
       with:
           image: nisflei/aula_maven_f
-          tags: ${{ github.run_number }}, ${{ steps.gerador.outputs.version }}
+          tags: ${{ github.run_number }}, ${{ steps.gerador.outputs.version }}, ${{ steps.calculo.outputs.version_new }}
           registry: docker.io
           dockerfile: dockerfile
           username: ${{ secrets.DOCKERHUB_USUARIO }}
