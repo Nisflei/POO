@@ -32,17 +32,27 @@ jobs:
    #   id: calculo
    #   run: |
    #      echo "::set-output name=version_new::$(echo ${{ github.run_number }}/10)"
-      
-    - name: Get & Manipulate Git Version
-      uses: maxkruger/get-version-action@v3.0.3
-    - run: echo ${{ steps.get_version.outputs.version }}
-    - run: echo ${{ steps.get_version.outputs.version-without-v }}
+  
+    - name: Git Version
+      uses: codacy/git-version@2.4.0
+      with:
+        # The name of the release branch
+        release-branch: master
+        # The prefix to use in the version
+        prefix: QA-
+
+    - name: Use the version
+      run: |
+          echo ${{ steps.version.outputs.version }}
+    - name: Use the previous version
+      run: |
+          echo ${{ steps.version.outputs.previous-version }}
    
     - uses: mr-smithers-excellent/docker-build-push@v6
       name: Deploy Docker image
       with:
           image: nisflei/aula_maven_f
-          tags: ${{ github.run_number }}
+          tags: ${{ github.run_number }}, ${{ steps.version.outputs.version }}
           registry: docker.io
           dockerfile: dockerfile
           username: ${{ secrets.DOCKERHUB_USUARIO }}
