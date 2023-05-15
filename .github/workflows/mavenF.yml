@@ -28,10 +28,10 @@ jobs:
     - name: Run Program - Java
       run: java -cp target/classes org.example.Main
     
-   # - name: Calculando 
-   #   id: calculo
-   #   run: |
-   #      echo "::set-output name=version_new::$(echo ${{ github.run_number }}/10)"
+    - name: Calculando 
+      id: calculo
+      run: |
+         echo "::set-output name=version_new::$(echo $((${{ github.run_number }}/10)))"
   
     - name: Git Version
       id: gerador
