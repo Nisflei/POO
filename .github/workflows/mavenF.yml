@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    #Instalação da JDK
     - uses: actions/checkout@v3
     - name: Set up JDK 11
       uses: actions/setup-java@v3
@@ -19,41 +20,49 @@ jobs:
         java-version: '11'
         distribution: 'temurin'
         cache: maven
+        
+    # Dependencias do Maven    
     - name: Build with Maven
       run: mvn -B package --file pom.xml
     
+    #Compilar o Projeto
     - name: Compilar no JAVA
       run: mvn compile
       
+    # Executando o Projeto   
     - name: Run Program - Java
       run: java -cp target/classes org.example.Main
     
-    - name: Calculando 
-      id: calculo
-      run: |
-         echo "::set-output name=version_new::$(echo $((${{ github.run_number }}/10)))"
+    # Gerando versionamento Ex:1 
+    - name: Usando o Git Run Number
+      run: echo "Numero no Git:${{ github.run_number }}" 
+    
+    
+    # Calculando no shell, mas não tem decimal
+    #- name: Calculando 
+    #  id: calculo
+    #  run: |
+    #     echo "::set-output name=version_new::$(echo $((${{ github.run_number }}/10)))"
   
-    #- name: Git Version
-    #  id: gerador
-    #  uses: codacy/git-version@2.4.0
-    #  with:
-        # The name of the release branch
-    #    release-branch: master
-        # The prefix to use in the version
-    #    prefix: QA-
+    # Gerando versionamento Ex:2
+    - name: Git Version - Exemplo2
+      id: gerador
+      uses: codacy/git-version@2.4.0
+      with:
+         release-branch: master
+         prefix: master-
 
-    #- name: Use the version
-    #  run: |
-    #      echo ${{ steps.gerador.outputs.version }}
-    #- name: Use the previous version
-    #  run: |
-    #      echo ${{ steps.gerador.outputs.previous-version }}
+    - name: Visualizando as Versões Ex:2
+      run: |
+          echo ${{ steps.gerador.outputs.version }}
+          echo ${{ steps.gerador.outputs.previous-version }}
    
+    # Fazendo deploy no Docker hub
     - uses: mr-smithers-excellent/docker-build-push@v6
       name: Deploy Docker image
       with:
           image: nisflei/aula_maven_f
-          tags: ${{ github.run_number }}, ${{ steps.gerador.outputs.version }}, ${{ steps.calculo.outputs.version_new }}
+          tags: ${{ github.run_number }}, ${{ steps.gerador.outputs.version }}
           registry: docker.io
           dockerfile: dockerfile
           username: ${{ secrets.DOCKERHUB_USUARIO }}
